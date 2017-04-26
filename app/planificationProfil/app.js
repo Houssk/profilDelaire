@@ -171,9 +171,6 @@ function onDocumentMouseDown( event ){
                 $("#validerPoint").removeAttr("disabled");
                 validerPoint = false;
                 droiteC2.setVecteurB(profilDelaire.getAra());
-                droiteC1.drawPlane();
-                droiteC2.drawPlane();
-                console.log("droite c1 c2",droiteC2,droiteC1);
 
             }
             else if(compteurPoints == 4) {
@@ -183,8 +180,6 @@ function onDocumentMouseDown( event ){
                 validerPoint = false;
                 droiteF5.setVecteurA(profilDelaire.getNp());
                 droiteF5.setVecteurB(droiteF5.drawPerpendicular(profilDelaire.getNp(),droiteC1));
-                droiteF5.drawPlane();
-
             }
             else if(compteurPoints == 5) {
                 profilDelaire.setOd(intersects[0].point);
@@ -193,14 +188,12 @@ function onDocumentMouseDown( event ){
                 validerPoint = false;
                 droiteF4.setVecteurB(profilDelaire.getOd());
                 droiteF4.setVecteurA(droiteF4.drawParallel(profilDelaire.getOd(),droiteC1));
-                droiteF4.drawPlane();
                 var intersection = droiteF4.getIntersection(droiteF5);
                 var sphereTest = new THREE.Mesh(pointSphere, particleMaterial);
                 sphereTest.position.copy(intersection);
                 scene.add(sphereTest);
                 droiteF6.setVecteurA(intersection);
                 droiteF6.setVecteurB(droiteF6.drawParallel(intersection,droiteC2));
-                droiteF6.drawPlane();
             }
             else if(compteurPoints == 6) {
                 profilDelaire.setPts(intersects[0].point);
@@ -215,11 +208,6 @@ function onDocumentMouseDown( event ){
                 $("#validerPoint").removeAttr("disabled");
                 validerPoint = false;
                 droiteF2.setVecteurB(profilDelaire.getPti());
-                droiteF2.drawPlane();
-                console.log("droiteC1", droiteC1);
-                console.log("droiteF6", droiteF6);
-                console.log("droiteF2", droiteF2);
-
             }
             else if(compteurPoints == 8) {
                 profilDelaire.setCo(intersects[0].point);
@@ -233,8 +221,8 @@ function onDocumentMouseDown( event ){
                 sphereTest.position.copy(intersection2);
                 scene.add(sphereTest);
                 droiteF8.setVecteurA(intersection2);
-                 droiteF8.setVecteurB(profilDelaire.getCo());
-                 droiteF8.drawPlane();
+                droiteF8.setVecteurB(profilDelaire.getCo());
+
             }
         }
     }
@@ -264,6 +252,15 @@ function validerDelaire() {
     }
     else if(compteurPoints == 7) {
         id("imageDelaire").src ="../../img/img_delaire/commissure.jpg";
+    }
+    else if( compteurPoints == 8 ) {
+        droiteC1.drawPlane();
+        droiteC2.drawPlane();
+        droiteF5.drawPlane();
+        droiteF4.drawPlane();
+        droiteF6.drawPlane();
+        droiteF2.drawPlane();
+        droiteF8.drawPlane();
     }
 }
 function deleteDelaire() {
