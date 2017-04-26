@@ -42,44 +42,44 @@ function init() {
     console.log(profilDelaire);
     droiteC1.setHeight(20);
     droiteC1.setWidth(widthInitialeImage);
-    droiteC1.setColor(0xFF0000);
+    droiteC1.setColor(0x0000FF);
     /**
      *
      */
     droiteC2.setHeight(20);
     droiteC2.setWidth(widthInitialeImage);
-    droiteC2.setColor(0xFF0000);
+    droiteC2.setColor(0x0000FF);
     /**
      *
      */
     droiteF5.setHeight(20);
     droiteF5.setWidth(widthInitialeImage);
-    droiteF5.setColor(0xFFFF00);
+    droiteF5.setColor(0x0000FF);
     /**
      *
      */
     droiteF4.setHeight(20);
     droiteF4.setWidth(widthInitialeImage);
-    droiteF4.setColor(0xFF00FF);
+    droiteF4.setColor(0x0000FF);
     /**
      *
      *
      */
     droiteF6.setHeight(20);
     droiteF6.setWidth(widthInitialeImage);
-    droiteF6.setColor(0xFF99FF);
+    droiteF6.setColor(0x0000FF);
     /**
      *
      */
     droiteF2.setHeight(20);
     droiteF2.setWidth(widthInitialeImage);
-    droiteF2.setColor(0x2399FF);
+    droiteF2.setColor(0x0000FF);
     /**
      *
      */
     droiteF8.setHeight(20);
     droiteF8.setWidth(widthInitialeImage);
-    droiteF8.setColor(0x239924);
+    droiteF8.setColor(0xFF0000);
     /**
      *
      * @type {THREE.Scene}
