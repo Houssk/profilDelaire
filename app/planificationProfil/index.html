@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Planification 2.5D</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/step.css">
+    <link rel="stylesheet" href="../../css/slider.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css" rel="stylesheet" media="screen">
+
+</head>
+<body>
+<div id = "header" class ="row">
+    <div  class="col-md-12" >
+        <div id = "barre"  class="col-md-col-md-12"></div>
+    </div>
+    <div class="container" style="margin-top: 5%;">
+        <div class="process">
+            <div class="process-row">
+                <div class="process-step">
+                    <button type="button" class="btn btn-success btn-circle" ><i class="fa fa-upload fa-3x"></i></button>
+                    <p>Upload pictures</p>
+                </div>
+                <div class="process-step">
+                    <button type="button" class="btn btn-success btn-circle" disabled="disabled"><i class="fa fa-wrench fa-3x"></i></button>
+                    <p>Calibrage Profil</p>
+                </div>
+                <div class="process-step">
+                    <button type="button" class="btn btn-primary btn-circle" disabled="disabled"><i class="fa fa-pencil fa-3x"></i></button>
+                    <p>Planification Profil</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5 col-md-offset-1">
+            <div id="scene"></div>
+        </div>
+        <div id="handlePlan1" class="col-md-3 col-md-offset-1">
+            <div >
+                <div class="handle-box">
+                    <img id="imageDelaire" src="../../img/img_delaire/m.jpg" alt="" style="width: 490px;">
+                    <ul class="pager" style="display: none">
+                        <!--<li class="previous"><a href="#"><span aria-hidden="true">&larr;</span> Older</a></li>-->
+                        <li  class="next"><a href="../calibrationProfil/">Suivant <span aria-hidden="true" >&rarr;</span></a></li>
+                    </ul>
+                    <div style="margin-top: 6px;">
+                        <button id="deletePoint" type="button" class="btn btn-danger" disabled="disabled" onclick="deleteDelaire()"><i class="fa fa-trash fa-3x"></i></button>
+                        <button id="validerPoint" type="button" class="btn btn-success" style="float: right;" disabled="disabled" onclick="validerDelaire()"><i class="fa fa-check fa-3x"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav id="nextCalibrageProfil" aria-label="..." class=" col-md-6 col-md-offset-4 " style="display: none ; margin-top: -3%;">
+        <ul class="pager">
+            <!--<li class="previous"><a href="#"><span aria-hidden="true">&larr;</span> Older</a></li>-->
+            <li  class="next"><a href="../calibrationProfil/">Suivant <span aria-hidden="true" >&rarr;</span></a></li>
+        </ul>
+    </nav>
+
+
+    <script type="text/javascript" src ="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src ="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
+    <script type="text/javascript" src ="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js"></script>
+    <script type="text/javascript" src ="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
+    <script type="text/javascript" src ="../../build/three.min.js"></script>
+    <script type="text/javascript" src ="../../build/OrbitControls.js"></script>
+    <script type="text/javascript" src ="../../build/CombinedCamera.js"></script>
+    <script type="text/javascript" src ="../../build/STLLoader.js"></script>
+    <script type="text/javascript" src ="../../class/utils.js"></script>
+    <script type="text/javascript" src ="../../class/plan.js"></script>
+    <script type="text/javascript" src ="../../class/delaire.js"></script>
+    <script type="text/javascript" src ="app.js"></script>
+    <script>
+
+    </script>
+</body>
+</html>

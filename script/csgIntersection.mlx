@@ -1,0 +1,11 @@
+<!DOCTYPE FilterScript>
+<FilterScript>
+ <filter name="CSG Operation">
+  <Param name="FirstMesh" description="First Mesh" tooltip="The first operand of the CSG operation" value="0" type="RichMesh"/>
+  <Param name="SecondMesh" description="Second Mesh" tooltip="The second operand of the CSG operation" value="0" type="RichMesh"/>
+  <Param min="0" max="19.2067" name="Delta" description="Spacing between sampling lines" tooltip="This parameter controls the accuracy of the result and the speed of the computation.The time and memory needed to perform the operation usually scale as the reciprocal square of this value.For optimal results, this value should be at most half the the smallest feature (i.e. the highest frequency) you want to reproduce." value="0.19207" type="RichAbsPerc"/>
+  <Param name="SubDelta" description="Discretization points per sample interval" tooltip="This is the number of points between the sampling lines to which the vertices can be rounded.Increasing this can marginally increase the precision and decrease the speed of the operation." value="32" type="RichInt"/>
+  <Param enum_val1="Union" enum_val2="Difference" name="Operator" enum_cardinality="3" description="Operator" tooltip="Intersection takes the volume shared between the two meshes; Union takes the volume included in at least one of the two meshes; Difference takes the volume included in the first mesh but not in the second one" value="0" type="RichEnum" enum_val0="Intersection"/>
+  <Param name="Extended" description="Extended Marching Cubes" tooltip="Use extended marching cubes for surface reconstruction. It tries to improve the quality of the mesh by reconstructing the sharp features using the information in vertex normals" value="false" type="RichBool"/>
+ </filter>
+</FilterScript>
