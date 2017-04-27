@@ -29,6 +29,12 @@ var droiteF4 = new Plan();
 var droiteF6 = new Plan();
 var droiteF2 = new Plan();
 var droiteF8 = new Plan();
+var distanceF4yInitiale = 0;
+var distanceF6yInitiale = 0;
+var odY = 0;
+var enatY =0;
+var ptoY = 0;
+var controlTransform;
 function init() {
 
     /**
@@ -102,11 +108,14 @@ function init() {
 
     renderer = new THREE.WebGLRenderer({ antaliasing : true });
     renderer.setSize(id("scene").clientWidth , 600);
+    controlTransform = new THREE.TransformControls( camera, renderer.domElement );
 
     id("scene").appendChild(renderer.domElement);
     var axisHelper = new THREE.AxisHelper( 100 );
     scene.add( axisHelper );
     controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableRotate = false;
+    console.log(controls);
     pointDelaire3D = new THREE.Object3D();
     scene.add( pointDelaire3D );
     /**
@@ -123,6 +132,37 @@ function init() {
     mouse = new THREE.Vector2();
     document.addEventListener('dblclick', onDocumentMouseDown, false);
     document.addEventListener( 'touchstart', onDocumentTouchStart, false );
+    controlTransform.addEventListener( 'change', function () {
+        console.log('  it s time to change ');
+        console.log(-distanceF4yInitiale + droiteF4.getPlane().position.y);
+        var dist = -distanceF4yInitiale + droiteF4.getPlane().position.y;
+        droiteF6.getPlane().position.y = distanceF6yInitiale + dist;
+
+        /**
+         * Compute the new F4
+         */
+        droiteF4.getVecteurB().y = odY + dist;
+        droiteF4.setVecteurA(droiteF4.drawParallel(droiteF4.getVecteurB(),droiteC1));
+
+        /**
+         * Compute the new F6
+         */
+        droiteF6.getVecteurA().y = enatY + dist;
+        droiteF6.setVecteurB(droiteF6.drawParallel(droiteF6.getVecteurA(),droiteC2));
+        /**
+         * Compute the new F8
+         */
+        var intersection = droiteF2.getIntersection(droiteF6);
+        droiteF8.setVecteurA(intersection);
+        droiteF8.setVecteurB(profilDelaire.getCo());
+        /**
+         * Draw
+         */
+        scene.remove(droiteF8.getPlane());
+        droiteF8.drawPlane();
+
+
+    });
 }
 function onDocumentTouchStart( event) {
     console.log("let's rock touch");
@@ -185,6 +225,7 @@ function onDocumentMouseDown( event ){
                 profilDelaire.setOd(intersects[0].point);
                 $("#deletePoint").removeAttr("disabled");
                 $("#validerPoint").removeAttr("disabled");
+                odY = profilDelaire.getOd().y;
                 validerPoint = false;
                 droiteF4.setVecteurB(profilDelaire.getOd());
                 droiteF4.setVecteurA(droiteF4.drawParallel(profilDelaire.getOd(),droiteC1));
@@ -193,6 +234,7 @@ function onDocumentMouseDown( event ){
                 sphereTest.position.copy(intersection);
                 scene.add(sphereTest);
                 droiteF6.setVecteurA(intersection);
+                enatY = droiteF6.getVecteurA().y;
                 droiteF6.setVecteurB(droiteF6.drawParallel(intersection,droiteC2));
             }
             else if(compteurPoints == 6) {
@@ -221,6 +263,7 @@ function onDocumentMouseDown( event ){
                 sphereTest.position.copy(intersection2);
                 scene.add(sphereTest);
                 droiteF8.setVecteurA(intersection2);
+                ptoY = droiteF8.getVecteurA().y;
                 droiteF8.setVecteurB(profilDelaire.getCo());
 
             }
@@ -258,9 +301,16 @@ function validerDelaire() {
         droiteC2.drawPlane();
         droiteF5.drawPlane();
         droiteF4.drawPlane();
+        distanceF4yInitiale = droiteF4.getPlane().position.y;
+        console.log("distanceF4yInitiale", distanceF4yInitiale);
         droiteF6.drawPlane();
+        distanceF6yInitiale = droiteF6.getPlane().position.y;
+        console.log("distanceF6yInitiale", distanceF6yInitiale);
         droiteF2.drawPlane();
         droiteF8.drawPlane();
+        controlTransform.attach( droiteF4.getPlane() );
+        controlTransform.setMode("translate");
+        scene.add( controlTransform );
     }
 }
 function deleteDelaire() {
