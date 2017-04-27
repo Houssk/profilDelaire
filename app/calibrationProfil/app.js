@@ -49,6 +49,7 @@ function init() {
     var axisHelper = new THREE.AxisHelper( 100 );
     scene.add( axisHelper );
     controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableRotate = false;
 
     /**
      * Draw Plane geometry with doubleSide and map image face
