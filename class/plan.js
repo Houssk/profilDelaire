@@ -122,7 +122,7 @@ Plan.prototype.getPente = function (){
 };
 Plan.prototype.drawPlane = function () {
     var angle =this.getPente(this.vecteurA,this.vecteurB);
-    var geometry = new THREE.PlaneGeometry(this.width,this.height,20);
+    var geometry = new THREE.BoxGeometry(this.width,this.height,0.5);
     var material = new THREE.MeshStandardMaterial({ color: this.color, side : THREE.DoubleSide });
     this.plane = new THREE.Mesh(geometry,material);
     this.plane.position.set( (this.vecteurA.x + this.vecteurB.x)/2, (this.vecteurA.y+this.vecteurB.y)/2, 0 );

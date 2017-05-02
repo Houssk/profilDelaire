@@ -35,6 +35,9 @@ var odY = 0;
 var enatY =0;
 var ptoY = 0;
 var controlTransform;
+var controlTransformCo;
+
+
 function init() {
 
     /**
@@ -46,44 +49,44 @@ function init() {
     console.log("let's rock Houssam");
     profilDelaire = new delaire();
     console.log(profilDelaire);
-    droiteC1.setHeight(20);
+    droiteC1.setHeight(1);
     droiteC1.setWidth(widthInitialeImage);
-    droiteC1.setColor(0x0000FF);
+    droiteC1.setColor(0xFFFF00);
     /**
      *
      */
-    droiteC2.setHeight(20);
+    droiteC2.setHeight(1);
     droiteC2.setWidth(widthInitialeImage);
-    droiteC2.setColor(0x0000FF);
+    droiteC2.setColor(0xFFFF00);
     /**
      *
      */
-    droiteF5.setHeight(20);
+    droiteF5.setHeight(1);
     droiteF5.setWidth(widthInitialeImage);
-    droiteF5.setColor(0x0000FF);
+    droiteF5.setColor(0xFFFF00);
     /**
      *
      */
-    droiteF4.setHeight(20);
+    droiteF4.setHeight(1);
     droiteF4.setWidth(widthInitialeImage);
-    droiteF4.setColor(0x0000FF);
+    droiteF4.setColor(0xFFFF00);
     /**
      *
      *
      */
-    droiteF6.setHeight(20);
+    droiteF6.setHeight(1);
     droiteF6.setWidth(widthInitialeImage);
-    droiteF6.setColor(0x0000FF);
+    droiteF6.setColor(0xFFFF00);
     /**
      *
      */
-    droiteF2.setHeight(20);
+    droiteF2.setHeight(1);
     droiteF2.setWidth(widthInitialeImage);
-    droiteF2.setColor(0x0000FF);
+    droiteF2.setColor(0xFFFF00);
     /**
      *
      */
-    droiteF8.setHeight(20);
+    droiteF8.setHeight(1);
     droiteF8.setWidth(widthInitialeImage);
     droiteF8.setColor(0xFF0000);
     /**
@@ -109,6 +112,7 @@ function init() {
     renderer = new THREE.WebGLRenderer({ antaliasing : true });
     renderer.setSize(id("scene").clientWidth , 600);
     controlTransform = new THREE.TransformControls( camera, renderer.domElement );
+    controlTransformCo = new THREE.TransformControls( camera, renderer.domElement );
 
     id("scene").appendChild(renderer.domElement);
     var axisHelper = new THREE.AxisHelper( 100 );
@@ -132,6 +136,7 @@ function init() {
     mouse = new THREE.Vector2();
     document.addEventListener('dblclick', onDocumentMouseDown, false);
     document.addEventListener( 'touchstart', onDocumentTouchStart, false );
+
     controlTransform.addEventListener( 'change', function () {
         console.log('  it s time to change ');
         console.log(-distanceF4yInitiale + droiteF4.getPlane().position.y);
@@ -163,6 +168,13 @@ function init() {
 
 
     });
+    controlTransformCo.addEventListener( 'change', function () {
+        console.log(" time to change commissure ");
+        profilDelaire.setCo(pointDelaire3D.children[7].position);
+        droiteF8.setVecteurB(profilDelaire.getCo());
+        scene.remove(droiteF8.getPlane());
+        droiteF8.drawPlane();
+    })
 }
 function onDocumentTouchStart( event) {
     console.log("let's rock touch");
@@ -193,6 +205,7 @@ function onDocumentMouseDown( event ){
             if(compteurPoints == 1) {
                 profilDelaire.setM(intersects[0].point);
                 validerPoint = false;
+
                 $("#deletePoint").removeAttr("disabled");
                 $("#validerPoint").removeAttr("disabled");
                 droiteC1.setVecteurA(profilDelaire.getM());
@@ -265,7 +278,6 @@ function onDocumentMouseDown( event ){
                 droiteF8.setVecteurA(intersection2);
                 ptoY = droiteF8.getVecteurA().y;
                 droiteF8.setVecteurB(profilDelaire.getCo());
-
             }
         }
     }
@@ -311,6 +323,9 @@ function validerDelaire() {
         controlTransform.attach( droiteF4.getPlane() );
         controlTransform.setMode("translate");
         scene.add( controlTransform );
+        controlTransformCo.attach( pointDelaire3D.children[7]);
+        controlTransformCo.setMode("translate");
+        scene.add( controlTransformCo );
     }
 }
 function deleteDelaire() {
