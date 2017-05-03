@@ -140,10 +140,10 @@ function init() {
          *
          * @type {number}
          */
-        controlTransform.children[0].children[0].children[4].material.transparent = true;
-        controlTransform.children[0].children[0].children[4].material.opacity = 0;
-        controlTransform.children[0].children[0].children[5].material.transparent = true;
-        controlTransform.children[0].children[0].children[5].material.opacity = 0;
+        for (var i = 4 ; i <=9 ; i++) {
+            controlTransform.children[0].children[0].children[i].material.transparent = true;
+            controlTransform.children[0].children[0].children[i].material.opacity = 0;
+        }
         /**
          *
          * @type {number}
@@ -183,10 +183,10 @@ function init() {
          *
          * @type {number}
          */
-        controlTransformCo.children[0].children[0].children[4].material.transparent = true;
-        controlTransformCo.children[0].children[0].children[4].material.opacity = 0;
-        controlTransformCo.children[0].children[0].children[5].material.transparent = true;
-        controlTransformCo.children[0].children[0].children[5].material.opacity = 0;
+        for (var i = 4 ; i <=9 ; i++) {
+            controlTransformCo.children[0].children[0].children[i].material.transparent = true;
+            controlTransformCo.children[0].children[0].children[i].material.opacity = 0;
+        }
         /**
          *
          * @type {number}
@@ -204,10 +204,10 @@ function init() {
          *
          * @type {number}
          */
-        controlTransformF5.children[0].children[0].children[4].material.transparent = true;
-        controlTransformF5.children[0].children[0].children[4].material.opacity = 0;
-        controlTransformF5.children[0].children[0].children[5].material.transparent = true;
-        controlTransformF5.children[0].children[0].children[5].material.opacity = 0;
+        for (var i = 4 ; i <=9 ; i++) {
+            controlTransformF5.children[0].children[0].children[i].material.transparent = true;
+            controlTransformF5.children[0].children[0].children[i].material.opacity = 0;
+        }
         /**
          *
          * @type {number}
@@ -387,10 +387,10 @@ function validerDelaire() {
         distanceF5xInitiale = droiteF5.getPlane().position.x;
         controlTransformF5.attach( droiteF5.getPlane() );
         controlTransformF5.setMode("translate");
-        controlTransformF5.children[0].children[0].children[4].material.transparent = true;
-        controlTransformF5.children[0].children[0].children[4].material.opacity = 0;
-        controlTransformF5.children[0].children[0].children[5].material.transparent = true;
-        controlTransformF5.children[0].children[0].children[5].material.opacity = 0;
+        for (var i = 4 ; i <=9 ; i++) {
+            controlTransformF5.children[0].children[0].children[i].material.transparent = true;
+            controlTransformF5.children[0].children[0].children[i].material.opacity = 0;
+        }
         scene.add( controlTransformF5 );
         /**
          *
@@ -419,19 +419,21 @@ function validerDelaire() {
          */
         controlTransform.attach( droiteF4.getPlane() );
         controlTransform.setMode("translate");
-        controlTransform.children[0].children[0].children[4].material.transparent = true;
-        controlTransform.children[0].children[0].children[4].material.opacity = 0;
-        controlTransform.children[0].children[0].children[5].material.transparent = true;
-        controlTransform.children[0].children[0].children[5].material.opacity = 0;
+        for (var i = 4 ; i <=9 ; i++) {
+            controlTransform.children[0].children[0].children[i].material.transparent = true;
+            controlTransform.children[0].children[0].children[i].material.opacity = 0;
+        }
         scene.add( controlTransform );
         controlTransformCo.attach( pointDelaire3D.children[7]);
         controlTransformCo.setMode("translate");
-        controlTransformCo.children[0].children[0].children[4].material.transparent = true;
-        controlTransformCo.children[0].children[0].children[4].material.opacity = 0;
-        controlTransformCo.children[0].children[0].children[5].material.transparent = true;
-        controlTransformCo.children[0].children[0].children[5].material.opacity = 0;
+        for (var i = 4 ; i <=9 ; i++) {
+            controlTransformCo.children[0].children[0].children[i].material.transparent = true;
+            controlTransformCo.children[0].children[0].children[i].material.opacity = 0;
+        }
         scene.add( controlTransformCo );
         conditionDelaire = false;
+        id("delval").style.display ="none";
+        id("validerProfil").style.display ="";
     }
 }
 function deleteDelaire() {
@@ -463,6 +465,27 @@ function drawPlane(vecteurA,vecteurB,color){
     plane.position.set( (vecteurA.x+vecteurB.x)/2, (vecteurA.y+vecteurB.y)/2, 0 );
     plane.rotation.set( Math.PI/2, angle, 0);
     scene.add(plane);
+}
+function validerProfil() {
+    swal({
+            title: "êtes vous sûr?",
+            text: "Vous ne pouvez plus modifier le profil de Delaire",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Oui validez !",
+            closeOnConfirm: false
+        },
+        function(){
+            swal("Valider !", "le profil de Delaire est validé", "success");
+            controlTransformCo.detach();
+            controlTransform.detach();
+            controlTransformF5.detach();
+            scene.remove(controlTransformCo);
+            scene.remove(controlTransformF5);
+            scene.remove(controlTransform);
+            id("validerProfil").style.display = "none";
+        });
 }
 function render() {
     requestAnimationFrame(render);

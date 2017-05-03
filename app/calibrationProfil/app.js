@@ -33,15 +33,11 @@ function init() {
      * */
     console.log("let's rock Houssam");
     scene = new THREE.Scene();
-    camera =  new THREE.PerspectiveCamera( 35, 800 / 600, 1, 20000 );
-    camera.position.set(0,0,140);
-    dLight = new THREE.DirectionalLight(0xFFFFFF, 1);
-    dLight.position.set(5,10,15);
+    camera = new THREE.PerspectiveCamera(60, 800 / 600, 1, 20000);
+    camera.position.set(0, 0, 200);
+    dLight = new THREE.AmbientLight(0xFFFFFF, 1.5);
+    dLight.position.set(0,0,0);
     scene.add(dLight);
-    var dLight2 = new THREE.DirectionalLight(0xFFFFFF, 1);
-    dLight2.position.set(5,10,-20);
-    scene.add(dLight2);
-
     renderer = new THREE.WebGLRenderer({ antaliasing : true });
     renderer.setSize(id("scene").clientWidth , 600);
 
