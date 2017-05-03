@@ -19,7 +19,7 @@ var points = [];
 var particle;
 var pointDelaire3D;
 var profilDelaire;
-var compteurPoints =0;
+var compteurPoints = 0;
 var conditionDelaire = true;
 var validerPoint = true;
 var droiteC1 = new Plan();
@@ -100,18 +100,10 @@ function init() {
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(60, 800 / 600, 1, 20000);
     camera.position.set(0, 0, 200);
-    dLight = new THREE.DirectionalLight(0xFFFFFF, 1);
-    dLight.position.set(5,10,15);
+    dLight = new THREE.AmbientLight(0xFFFFFF, 1.5);
+    dLight.position.set(0,0,0);
     scene.add(dLight);
-    var dLight2 = new THREE.DirectionalLight(0xFFFFFF, 1);
-    dLight2.position.set(5,10,-20);
-    scene.add(dLight2);
-    var dLight3 = new THREE.DirectionalLight(0xFFFFFF, 1);
-    dLight3.position.set(-20,0,0);
-    scene.add(dLight3);
-    var dLight4 = new THREE.DirectionalLight(0xFFFFFF, 1);
-    dLight4.position.set(20,0,0);
-    scene.add(dLight4);
+
 
     renderer = new THREE.WebGLRenderer({ antaliasing : true });
     renderer.setSize(id("scene").clientWidth , 600);
@@ -141,8 +133,21 @@ function init() {
     mouse = new THREE.Vector2();
     document.addEventListener('dblclick', onDocumentMouseDown, false);
     document.addEventListener( 'touchstart', onDocumentTouchStart, false );
+    console.log('control transform ',controlTransform);
 
     controlTransform.addEventListener( 'change', function () {
+        /**
+         *
+         * @type {number}
+         */
+        controlTransform.children[0].children[0].children[4].material.transparent = true;
+        controlTransform.children[0].children[0].children[4].material.opacity = 0;
+        controlTransform.children[0].children[0].children[5].material.transparent = true;
+        controlTransform.children[0].children[0].children[5].material.opacity = 0;
+        /**
+         *
+         * @type {number}
+         */
         console.log('  it s time to change ');
         console.log(-distanceF4yInitiale + droiteF4.getPlane().position.y);
         var dist = -distanceF4yInitiale + droiteF4.getPlane().position.y;
@@ -174,6 +179,18 @@ function init() {
 
     });
     controlTransformCo.addEventListener( 'change', function () {
+        /**
+         *
+         * @type {number}
+         */
+        controlTransformCo.children[0].children[0].children[4].material.transparent = true;
+        controlTransformCo.children[0].children[0].children[4].material.opacity = 0;
+        controlTransformCo.children[0].children[0].children[5].material.transparent = true;
+        controlTransformCo.children[0].children[0].children[5].material.opacity = 0;
+        /**
+         *
+         * @type {number}
+         */
         console.log(" time to change commissure ");
         profilDelaire.setCo(pointDelaire3D.children[7].position);
         droiteF8.setVecteurB(profilDelaire.getCo());
@@ -183,6 +200,18 @@ function init() {
     });
     controlTransformF5.addEventListener( 'change', function () {
             console.log(" let's change F5");
+        /**
+         *
+         * @type {number}
+         */
+        controlTransformF5.children[0].children[0].children[4].material.transparent = true;
+        controlTransformF5.children[0].children[0].children[4].material.opacity = 0;
+        controlTransformF5.children[0].children[0].children[5].material.transparent = true;
+        controlTransformF5.children[0].children[0].children[5].material.opacity = 0;
+        /**
+         *
+         * @type {number}
+         */
             var dist = droiteF5.getPlane().position.x -distanceF5xInitiale ;
             /**
              * compute the new F6
@@ -358,6 +387,10 @@ function validerDelaire() {
         distanceF5xInitiale = droiteF5.getPlane().position.x;
         controlTransformF5.attach( droiteF5.getPlane() );
         controlTransformF5.setMode("translate");
+        controlTransformF5.children[0].children[0].children[4].material.transparent = true;
+        controlTransformF5.children[0].children[0].children[4].material.opacity = 0;
+        controlTransformF5.children[0].children[0].children[5].material.transparent = true;
+        controlTransformF5.children[0].children[0].children[5].material.opacity = 0;
         scene.add( controlTransformF5 );
         /**
          *
@@ -386,9 +419,17 @@ function validerDelaire() {
          */
         controlTransform.attach( droiteF4.getPlane() );
         controlTransform.setMode("translate");
+        controlTransform.children[0].children[0].children[4].material.transparent = true;
+        controlTransform.children[0].children[0].children[4].material.opacity = 0;
+        controlTransform.children[0].children[0].children[5].material.transparent = true;
+        controlTransform.children[0].children[0].children[5].material.opacity = 0;
         scene.add( controlTransform );
         controlTransformCo.attach( pointDelaire3D.children[7]);
         controlTransformCo.setMode("translate");
+        controlTransformCo.children[0].children[0].children[4].material.transparent = true;
+        controlTransformCo.children[0].children[0].children[4].material.opacity = 0;
+        controlTransformCo.children[0].children[0].children[5].material.transparent = true;
+        controlTransformCo.children[0].children[0].children[5].material.opacity = 0;
         scene.add( controlTransformCo );
         conditionDelaire = false;
     }

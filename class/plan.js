@@ -120,6 +120,12 @@ Plan.prototype.getPente = function (){
     var pente = Math.atan(coeffDirecteur);
     return pente;
 };
+Plan.prototype.getPenteP = function (){
+    var coeffDirecteur = (this.vecteurB.y - this.vecteurA.y)/(this.vecteurB.x - this.vecteurA.x);
+    console.log("coeff Directeur :",coeffDirecteur);
+    var pente = (coeffDirecteur);
+    return pente;
+};
 Plan.prototype.drawPlane = function () {
     var angle =this.getPente(this.vecteurA,this.vecteurB);
     var geometry = new THREE.BoxGeometry(this.width,this.height,0.5);
@@ -187,7 +193,7 @@ Plan.prototype.getIntersection = function (planB) {
 };
 Plan.prototype.drawParallel = function (vecteur, plan) {
 
-    var m = plan.getPente();
+    var m = plan.getPenteP();
     var p = vecteur.y - m * vecteur.x;
     var vecteurX = vecteur.x+1 ;
     var vecteurY = vecteurX*m + p ;
