@@ -115,14 +115,25 @@ Plan.prototype.drawSegment = function() {
  * @returns {number}
  */
 Plan.prototype.getPente = function (){
-    var coeffDirecteur = (this.vecteurB.y - this.vecteurA.y)/(this.vecteurB.x - this.vecteurA.x);
+    var coeffDirecteur;
+    if((this.vecteurB.x - this.vecteurA.x) == 0 ){
+        coeffDirecteur = 0;
+    }
+    else{
+        coeffDirecteur = (this.vecteurB.y - this.vecteurA.y)/(this.vecteurB.x - this.vecteurA.x);
+    }
     console.log("coeff Directeur :",coeffDirecteur);
     var pente = Math.atan(coeffDirecteur);
     return pente;
 };
 Plan.prototype.getPenteP = function (){
-    var coeffDirecteur = (this.vecteurB.y - this.vecteurA.y)/(this.vecteurB.x - this.vecteurA.x);
-    console.log("coeff Directeur :",coeffDirecteur);
+    var coeffDirecteur;
+    if((this.vecteurB.x - this.vecteurA.x) == 0 ){
+        coeffDirecteur = 0;
+    }
+    else{
+        coeffDirecteur = (this.vecteurB.y - this.vecteurA.y)/(this.vecteurB.x - this.vecteurA.x);
+    }
     var pente = (coeffDirecteur);
     return pente;
 };

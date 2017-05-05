@@ -548,7 +548,7 @@ function setAxeZ() {
     controlTransformF5.position.z = 0;
     controlTransform.position.z =0;
     controlTransformPti.position.z =0;
-/*    droiteC1.plane.position.z = 0;
+   /* droiteC1.plane.position.z = 0;
     droiteC2.plane.position.z = 0;
     droiteF5.plane.position.z = 0;
     droiteF4.plane.position.z = 0;
