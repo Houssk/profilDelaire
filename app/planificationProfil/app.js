@@ -40,6 +40,8 @@ var coX = 0 ;
 var controlTransform;
 var controlTransformCo;
 var controlTransformF5;
+var controlTransformPts;
+var controlTransformPti;
 
 
 function init() {
@@ -110,6 +112,8 @@ function init() {
     controlTransform = new THREE.TransformControls( camera, renderer.domElement );
     controlTransformCo = new THREE.TransformControls( camera, renderer.domElement );
     controlTransformF5 = new THREE.TransformControls( camera, renderer.domElement );
+    controlTransformPts = new THREE.TransformControls( camera, renderer.domElement );
+    controlTransformPti = new THREE.TransformControls( camera, renderer.domElement );
 
     id("scene").appendChild(renderer.domElement);
     var axisHelper = new THREE.AxisHelper( 100 );
@@ -136,6 +140,7 @@ function init() {
     console.log('control transform ',controlTransform);
 
     controlTransform.addEventListener( 'change', function () {
+        setAxeZ();
         /**
          *
          * @type {number}
@@ -173,12 +178,13 @@ function init() {
         /**
          * Draw
          */
-        scene.remove(droiteF8.getPlane());
+        scene.remove(droiteF8.plane);
         droiteF8.drawPlane();
 
 
     });
     controlTransformCo.addEventListener( 'change', function () {
+        setAxeZ();
         /**
          *
          * @type {number}
@@ -199,6 +205,7 @@ function init() {
         droiteF8.drawPlane();
     });
     controlTransformF5.addEventListener( 'change', function () {
+        setAxeZ();
             console.log(" let's change F5");
         /**
          *
@@ -241,6 +248,34 @@ function init() {
                 controlTransformCo.setMode("translate");
                 scene.add(controlTransformCo);
             }
+    });
+    controlTransformPts.addEventListener('change', function () {
+        setAxeZ();
+        for (var i = 4 ; i <=9 ; i++) {
+            controlTransformPts.children[0].children[0].children[i].visible = false;
+        }
+        profilDelaire.setPts(pointDelaire3D.children[5].position);
+        droiteF2.setVecteurA(profilDelaire.getPts());
+        scene.remove(droiteF2.plane);
+        droiteF2.drawPlane();
+        var intersection = droiteF2.getIntersection(droiteF6);
+        droiteF8.setVecteurA(intersection);
+        scene.remove(droiteF8.plane);
+        droiteF8.drawPlane();
+    });
+    controlTransformPti.addEventListener('change', function () {
+        setAxeZ();
+        for (var i = 4 ; i <=9 ; i++) {
+            controlTransformPti.children[0].children[0].children[i].visible = false;
+        }
+        profilDelaire.setPti(pointDelaire3D.children[6].position);
+        droiteF2.setVecteurB(profilDelaire.getPti());
+        scene.remove(droiteF2.plane);
+        droiteF2.drawPlane();
+        var intersection = droiteF2.getIntersection(droiteF6);
+        droiteF8.setVecteurA(intersection);
+        scene.remove(droiteF8.plane);
+        droiteF8.drawPlane();
     });
 }
 function onDocumentTouchStart( event) {
@@ -388,8 +423,7 @@ function validerDelaire() {
         controlTransformF5.attach( droiteF5.getPlane() );
         controlTransformF5.setMode("translate");
         for (var i = 4 ; i <=9 ; i++) {
-            controlTransformF5.children[0].children[0].children[i].material.transparent = true;
-            controlTransformF5.children[0].children[0].children[i].material.opacity = 0;
+            controlTransformF5.children[0].children[0].children[i].visible = false;
         }
         scene.add( controlTransformF5 );
         /**
@@ -419,18 +453,36 @@ function validerDelaire() {
          */
         controlTransform.attach( droiteF4.getPlane() );
         controlTransform.setMode("translate");
-        for (var i = 4 ; i <=9 ; i++) {
-            controlTransform.children[0].children[0].children[i].material.transparent = true;
-            controlTransform.children[0].children[0].children[i].material.opacity = 0;
+
+        for (var k = 4 ; k <= 9 ; k++) {
+            controlTransform.children[0].children[0].children[k].visible = false;
+            console.log("houssam");
+           // controlTransform.children[0].children[0].children[i].material.opacity = 0;
+
         }
         scene.add( controlTransform );
+
         controlTransformCo.attach( pointDelaire3D.children[7]);
         controlTransformCo.setMode("translate");
         for (var i = 4 ; i <=9 ; i++) {
-            controlTransformCo.children[0].children[0].children[i].material.transparent = true;
-            controlTransformCo.children[0].children[0].children[i].material.opacity = 0;
+            controlTransformCo.children[0].children[0].children[i].visible = false;
         }
         scene.add( controlTransformCo );
+
+        controlTransformPts.attach( pointDelaire3D.children[5] );
+        controlTransformPts.setMode("translate");
+        for (var i = 4 ; i <=9 ; i++) {
+            controlTransformPts.children[0].children[0].children[i].visible = false;
+        }
+        scene.add( controlTransformPts );
+
+        controlTransformPti.attach( pointDelaire3D.children[6] );
+        controlTransformPti.setMode("translate");
+        for (var i = 4 ; i <=9 ; i++) {
+            controlTransformPti.children[0].children[0].children[i].visible = false;
+        }
+        scene.add( controlTransformPti );
+
         conditionDelaire = false;
         id("delval").style.display ="none";
         id("validerProfil").style.display ="";
@@ -477,7 +529,7 @@ function validerProfil() {
             closeOnConfirm: false
         },
         function(){
-            swal("Valider !", "le profil de Delaire est validé", "success");
+            swal("Valider !", "Le profil de Delaire est validé", "success");
             controlTransformCo.detach();
             controlTransform.detach();
             controlTransformF5.detach();
@@ -486,6 +538,23 @@ function validerProfil() {
             scene.remove(controlTransform);
             id("validerProfil").style.display = "none";
         });
+}
+function setAxeZ() {
+    for (var i=0; i<8 ; i++){
+        pointDelaire3D.children[i].position.z = 0;
+    }
+    controlTransformCo.position.z = 0;
+    controlTransformPts.position.z = 0;
+    controlTransformF5.position.z = 0;
+    controlTransform.position.z =0;
+    controlTransformPti.position.z =0;
+/*    droiteC1.plane.position.z = 0;
+    droiteC2.plane.position.z = 0;
+    droiteF5.plane.position.z = 0;
+    droiteF4.plane.position.z = 0;
+    droiteF2.plane.position.z = 0;
+    droiteF6.plane.position.z = 0;
+    droiteF8.plane.position.z = 0;*/
 }
 function render() {
     requestAnimationFrame(render);
