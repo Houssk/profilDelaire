@@ -536,6 +536,8 @@ function validerProfil() {
             scene.remove(controlTransformCo);
             scene.remove(controlTransformF5);
             scene.remove(controlTransform);
+            scene.remove(controlTransformPti);
+            scene.remove(controlTransformPts);
             id("validerProfil").style.display = "none";
         });
 }
