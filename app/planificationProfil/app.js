@@ -32,16 +32,22 @@ var droiteF8 = new Plan();
 var distanceF4yInitiale = 0;
 var distanceF6yInitiale = 0;
 var distanceF5xInitiale = 0;
+
 var odY = 0;
 var enatY =0;
 var ptoY = 0;
 var enatX = 0;
 var coX = 0 ;
+var npX = 0;
+
 var controlTransform;
 var controlTransformCo;
 var controlTransformF5;
 var controlTransformPts;
 var controlTransformPti;
+var controlTransformM;
+var controlTransformCla;
+var controlTransformAra;
 
 
 function init() {
@@ -114,6 +120,10 @@ function init() {
     controlTransformF5 = new THREE.TransformControls( camera, renderer.domElement );
     controlTransformPts = new THREE.TransformControls( camera, renderer.domElement );
     controlTransformPti = new THREE.TransformControls( camera, renderer.domElement );
+    controlTransformM = new THREE.TransformControls( camera, renderer.domElement );
+    controlTransformCla = new THREE.TransformControls( camera, renderer.domElement );
+    controlTransformAra = new THREE.TransformControls( camera, renderer.domElement );
+
 
     id("scene").appendChild(renderer.domElement);
     var axisHelper = new THREE.AxisHelper( 100 );
@@ -145,7 +155,7 @@ function init() {
          *
          * @type {number}
          */
-        for (var i = 4 ; i <=9 ; i++) {
+       for (var i = 4 ; i <=9 ; i++) {
             controlTransform.children[0].children[0].children[i].material.transparent = true;
             controlTransform.children[0].children[0].children[i].material.opacity = 0;
         }
@@ -157,18 +167,30 @@ function init() {
         console.log(-distanceF4yInitiale + droiteF4.getPlane().position.y);
         var dist = -distanceF4yInitiale + droiteF4.getPlane().position.y;
         droiteF6.getPlane().position.y = distanceF6yInitiale + dist;
+        pointDelaire3D.children[4].position.y = odY +dist;
 
         /**
          * Compute the new F4
          */
-        droiteF4.getVecteurB().y = odY + dist;
+        droiteF4.vecteurB.y = odY + dist;
         droiteF4.setVecteurA(droiteF4.drawParallel(droiteF4.getVecteurB(),droiteC1));
+        profilDelaire.od.y = odY + dist;
 
         /**
          * Compute the new F6
          */
-        droiteF6.getVecteurA().y = enatY + dist;
-        droiteF6.setVecteurB(droiteF6.drawParallel(droiteF6.getVecteurA(),droiteC2));
+       /* droiteF6.getVecteurA().y = enatY + dist;
+        droiteF6.setVecteurB(droiteF6.drawParallel(droiteF6.getVecteurA(),droiteC2));*/
+
+        /**
+         * Test F6
+          */
+        scene.remove(droiteF6.plane);
+        console.log("droiteF4",droiteF4);
+        var enat = droiteF4.getIntersection(droiteF5);
+        console.log("enat", enat);
+        droiteF6.setVecteurA(enat);
+        droiteF6.setVecteurB(droiteF6.drawParallel(enat,droiteC2));
         /**
          * Compute the new F8
          */
@@ -179,9 +201,10 @@ function init() {
          * Draw
          */
         scene.remove(droiteF8.plane);
+        droiteF6.drawPlane();
         droiteF8.drawPlane();
 
-
+        
     });
     controlTransformCo.addEventListener( 'change', function () {
         setAxeZ();
@@ -220,28 +243,24 @@ function init() {
          * @type {number}
          */
             var dist = droiteF5.getPlane().position.x -distanceF5xInitiale ;
-            /**
-             * compute the new F6
-             */
-            droiteF6.vecteurA.x = enatX + dist;
-            droiteF6.setVecteurB(droiteF6.drawParallel(droiteF6.getVecteurA(),droiteC2));
-            /**
-             * Compute the new F8
-             */
-            var intersection = droiteF2.getIntersection(droiteF6);
-            droiteF8.setVecteurA(intersection);
-           // profilDelaire.co.x = coX + dist;
-            droiteF8.setVecteurB(profilDelaire.getCo());
+            droiteF5.vecteurA.x = npX + dist;
+            droiteF5.setVecteurB(droiteF5.drawPerpendicular(profilDelaire.getNp(),droiteC1));
+            pointDelaire3D.children[3].position.x = npX + dist;
             /**
              *  Draw
              */
             if(dist!=0){
                 scene.remove(droiteF6.plane);
+                var enat = droiteF4.getIntersection(droiteF5);
+                console.log("enat", enat);
+                droiteF6.setVecteurA(enat);
+                droiteF6.setVecteurB(droiteF6.drawParallel(enat,droiteC2));
+                var intersection = droiteF2.getIntersection(droiteF6);
+                droiteF8.setVecteurA(intersection);
+                droiteF8.setVecteurB(profilDelaire.getCo());
                 scene.remove(droiteF8.plane);
                 droiteF6.drawPlane();
                 droiteF8.drawPlane();
-                pointDelaire3D.children[3].position.x = profilDelaire.getNp().x + dist;
-                //pointDelaire3D.children[7].pos
                 controlTransformCo.detach();
                 scene.remove(controlTransformCo);
                 controlTransformCo.attach(pointDelaire3D.children[7]);
@@ -277,6 +296,115 @@ function init() {
         scene.remove(droiteF8.plane);
         droiteF8.drawPlane();
     });
+   controlTransformM.addEventListener('change', function () {
+        setAxeZ();
+        for (var i = 4 ; i <=9 ; i++) {
+            controlTransformM.children[0].children[0].children[i].visible = false;
+        }
+        console.log("profilDelaire.getM()",profilDelaire.getM());
+        console.log("pointDelaire3D.children.position",pointDelaire3D.children[0].position);
+
+        profilDelaire.setM(pointDelaire3D.children[0].position);
+        scene.remove(droiteC1.plane);
+        scene.remove(droiteC2.plane);
+        scene.remove(droiteF5.plane);
+        scene.remove(droiteF4.plane);
+        scene.remove(droiteF6.plane);
+        scene.remove(droiteF8.plane);
+
+        droiteC1.setVecteurA(profilDelaire.getM());
+        droiteC2.setVecteurA(profilDelaire.getM());
+        droiteF5.setVecteurB(droiteF5.drawPerpendicular(profilDelaire.getNp(),droiteC1));
+        droiteF4.setVecteurB(profilDelaire.getOd());
+        odY =  profilDelaire.getOd().y;
+        droiteF4.setVecteurA(droiteF4.drawParallel(profilDelaire.getOd(),droiteC1));
+        var enat = droiteF4.getIntersection(droiteF5);
+        droiteF6.setVecteurA(enat);
+        enatY = droiteF6.getVecteurA().y;
+        enatX = droiteF6.getVecteurA().x;
+        droiteF6.setVecteurB(droiteF6.drawParallel(enat,droiteC2));
+        var pto = droiteF2.getIntersection(droiteF6);
+        droiteF8.setVecteurA(pto);
+        ptoY = droiteF8.getVecteurA().y;
+        droiteC1.drawPlane();
+        droiteC2.drawPlane();
+        droiteF5.drawPlane();
+        droiteF4.drawPlane();
+        droiteF6.drawPlane();
+        droiteF8.drawPlane();
+        controlTransform.attach( droiteF4.getPlane() );
+        controlTransformF5.attach( droiteF5.getPlane() );
+        distanceF6yInitiale = droiteF6.getPlane().position.y;
+        distanceF4yInitiale = droiteF4.getPlane().position.y;
+
+    });
+    controlTransformCla.addEventListener('change', function () {
+        setAxeZ();
+        for (var i = 4 ; i <=9 ; i++) {
+            controlTransformCla.children[0].children[0].children[i].visible = false;
+        }
+        console.log("profilDelaire.getM()",profilDelaire.getClp());
+        console.log("pointDelaire3D.children.position",pointDelaire3D.children[1].position);
+
+        profilDelaire.setClp(pointDelaire3D.children[1].position);
+        scene.remove(droiteC1.plane);
+        scene.remove(droiteF5.plane);
+        scene.remove(droiteF4.plane);
+        scene.remove(droiteF6.plane);
+        scene.remove(droiteF8.plane);
+
+        droiteC1.setVecteurB(profilDelaire.getClp());
+        droiteF5.setVecteurB(droiteF5.drawPerpendicular(profilDelaire.getNp(),droiteC1));
+        droiteF4.setVecteurB(profilDelaire.getOd());
+        odY =  profilDelaire.getOd().y;
+        droiteF4.setVecteurA(droiteF4.drawParallel(profilDelaire.getOd(),droiteC1));
+        var enat = droiteF4.getIntersection(droiteF5);
+        droiteF6.setVecteurA(enat);
+        enatY = droiteF6.getVecteurA().y;
+        enatX = droiteF6.getVecteurA().x;
+        droiteF6.setVecteurB(droiteF6.drawParallel(enat,droiteC2));
+        var pto = droiteF2.getIntersection(droiteF6);
+        droiteF8.setVecteurA(pto);
+        ptoY = droiteF8.getVecteurA().y;
+        droiteC1.drawPlane();
+        droiteF5.drawPlane();
+        droiteF4.drawPlane();
+        droiteF6.drawPlane();
+        droiteF8.drawPlane();
+        controlTransform.attach( droiteF4.getPlane() );
+        controlTransformF5.attach( droiteF5.getPlane() );
+        distanceF6yInitiale = droiteF6.getPlane().position.y;
+        distanceF4yInitiale = droiteF4.getPlane().position.y;
+    });
+
+    controlTransformAra.addEventListener('change', function () {
+        setAxeZ();
+        for (var i = 4 ; i <=9 ; i++) {
+            controlTransformAra.children[0].children[0].children[i].visible = false;
+        }
+        console.log("profilDelaire.getM()",profilDelaire.getAra());
+        console.log("pointDelaire3D.children.position",pointDelaire3D.children[2].position);
+
+        profilDelaire.setAra(pointDelaire3D.children[2].position);
+        scene.remove(droiteC2.plane);
+        scene.remove(droiteF6.plane);
+        scene.remove(droiteF8.plane);
+
+        droiteC2.setVecteurB(profilDelaire.getAra());
+        var enat = droiteF4.getIntersection(droiteF5);
+        droiteF6.setVecteurA(enat);
+        enatY = droiteF6.getVecteurA().y;
+        enatX = droiteF6.getVecteurA().x;
+        droiteF6.setVecteurB(droiteF6.drawParallel(enat,droiteC2));
+        var pto = droiteF2.getIntersection(droiteF6);
+        droiteF8.setVecteurA(pto);
+        ptoY = droiteF8.getVecteurA().y;
+        droiteC2.drawPlane();
+        droiteF6.drawPlane();
+        droiteF8.drawPlane();
+        distanceF6yInitiale = droiteF6.getPlane().position.y;
+    });
+
 }
 function onDocumentTouchStart( event) {
     console.log("let's rock touch");
@@ -332,6 +460,7 @@ function onDocumentMouseDown( event ){
                 profilDelaire.setNp(intersects[0].point);
                 $("#deletePoint").removeAttr("disabled");
                 $("#validerPoint").removeAttr("disabled");
+                npX = profilDelaire.getNp().x;
                 validerPoint = false;
                 droiteF5.setVecteurA(profilDelaire.getNp());
                 droiteF5.setVecteurB(droiteF5.drawPerpendicular(profilDelaire.getNp(),droiteC1));
@@ -461,28 +590,66 @@ function validerDelaire() {
 
         }
         scene.add( controlTransform );
-
+        /**
+         * Point CO
+         */
         controlTransformCo.attach( pointDelaire3D.children[7]);
         controlTransformCo.setMode("translate");
         for (var i = 4 ; i <=9 ; i++) {
             controlTransformCo.children[0].children[0].children[i].visible = false;
         }
         scene.add( controlTransformCo );
-
+        /**
+         * Point PTS
+         */
         controlTransformPts.attach( pointDelaire3D.children[5] );
         controlTransformPts.setMode("translate");
         for (var i = 4 ; i <=9 ; i++) {
             controlTransformPts.children[0].children[0].children[i].visible = false;
         }
         scene.add( controlTransformPts );
-
+        /**
+         * Point PTI
+         */
         controlTransformPti.attach( pointDelaire3D.children[6] );
         controlTransformPti.setMode("translate");
         for (var i = 4 ; i <=9 ; i++) {
             controlTransformPti.children[0].children[0].children[i].visible = false;
         }
         scene.add( controlTransformPti );
+        /**
+         * Point M
+         * @type {boolean}
+         */
+        controlTransformM.attach( pointDelaire3D.children[0] );
+        controlTransformM.setMode("translate");
+        for (var i = 4 ; i <=9 ; i++) {
+            controlTransformM.children[0].children[0].children[i].visible = false;
+        }
+       scene.add( controlTransformM );
+        /**
+         * Point Cla
+         */
+        controlTransformCla.attach( pointDelaire3D.children[1] );
+        controlTransformCla.setMode("translate");
+        for (var i = 4 ; i <=9 ; i++) {
+            controlTransformCla.children[0].children[0].children[i].visible = false;
+        }
+        scene.add( controlTransformCla );
+        /**
+         * Point Ara
+         */
+        controlTransformAra.attach( pointDelaire3D.children[2] );
+        controlTransformAra.setMode("translate");
+        for (var i = 4 ; i <=9 ; i++) {
+            controlTransformAra.children[0].children[0].children[i].visible = false;
+        }
+        scene.add( controlTransformAra );
 
+        /**
+         *
+         * @type {boolean}
+         */
         conditionDelaire = false;
         id("delval").style.display ="none";
         id("validerProfil").style.display ="";
@@ -550,6 +717,9 @@ function setAxeZ() {
     controlTransformF5.position.z = 0;
     controlTransform.position.z =0;
     controlTransformPti.position.z =0;
+    controlTransformM.position.z =0;
+    controlTransformCla.position.z = 0;
+    controlTransformAra.position.z = 0;
    /* droiteC1.plane.position.z = 0;
     droiteC2.plane.position.z = 0;
     droiteF5.plane.position.z = 0;
