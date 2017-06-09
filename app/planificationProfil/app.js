@@ -32,6 +32,7 @@ var droiteF8 = new Plan();
 var distanceF4yInitiale = 0;
 var distanceF6yInitiale = 0;
 var distanceF5xInitiale = 0;
+var scene3D = $('#scene');
 
 var odY = 0;
 var enatY =0;
@@ -416,8 +417,13 @@ function onDocumentTouchStart( event) {
 }
 function onDocumentMouseDown( event ){
     console.log("let's rock mouseDown");
-    var scene3D = $('#scene');
     event.preventDefault();
+    window.onresize = function() {
+        scene3D = $('#scene');
+        mouse.x = ( (event.clientX -scene3D.offset().left + $(window).scrollLeft() ) / scene3D.width() ) * 2 - 1;
+        mouse.y = - ( (event.clientY -scene3D.offset().top +$(window).scrollTop() )/ scene3D.height() ) * 2 + 1;
+        console.log("onresize");
+    };
     mouse.x = ( (event.clientX -scene3D.offset().left + $(window).scrollLeft() ) / scene3D.width() ) * 2 - 1;
     mouse.y = - ( (event.clientY -scene3D.offset().top +$(window).scrollTop() )/ scene3D.height() ) * 2 + 1;
     console.log("mouse", mouse.x,mouse.y);
@@ -688,7 +694,7 @@ function drawPlane(vecteurA,vecteurB,color){
 function validerProfil() {
     swal({
             title: "êtes vous sûr?",
-            text: "Vous ne pouvez plus modifier le profil de Delaire",
+            text: "Vous ne pouvez plus modifier l'évaluation céphalométrique",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
@@ -696,7 +702,7 @@ function validerProfil() {
             closeOnConfirm: false
         },
         function(){
-            swal("Valider !", "Le profil de Delaire est validé", "success");
+            swal("Valider !", "Votre évaluation céphalométrique est validée", "success");
             controlTransformCo.detach();
             controlTransform.detach();
             controlTransformF5.detach();
@@ -705,6 +711,9 @@ function validerProfil() {
             scene.remove(controlTransform);
             scene.remove(controlTransformPti);
             scene.remove(controlTransformPts);
+            scene.remove(controlTransformM);
+            scene.remove(controlTransformAra);
+            scene.remove(controlTransformCla);
             id("validerProfil").style.display = "none";
         });
 }
